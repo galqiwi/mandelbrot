@@ -23,19 +23,24 @@ int mandelb(const Comp& c) {
 }
 
 int main() {
-	for (int x = 0; x < PIC_SIZE_W; x++)
+	int frame = 0;
+	while (waitKey(1)) {
+		for (int x = 0; x < PIC_SIZE_W; x++)
 		for (int y = 0; y < PIC_SIZE_H; y++) {
 			pt x_ = +(((pt) x) / (PIC_SIZE_W - 1) * 2 - 1) * PIC_SIZE_W / PIC_SIZE_H;
 			pt y_ = -(((pt) y) / (PIC_SIZE_H - 1) * 2 - 1);
-			Comp c = Comp(x_ * 2, y_ * 2);
+			Comp c = Comp(x_ * 2 / pow(2, frame) - 1.7433419053321 , y_ * 2 / pow(2, frame) + 0.0000907687489);
 			int mand = mandelb(c);
-			if (mand == 0) {
-				mr.get(x, y, 0) = 0;
-				mr.get(x, y, 1) = 0;
-				mr.get(x, y, 2) = 0;
+			if (mand == 0 || true) {
+				mr.get(x, y, 0) = mand * 111;
+				mr.get(x, y, 1) = mand * 53;
+				mr.get(x, y, 2) = mand * 137;
 			}
 		}
 
-	imshow("main", m);
-	while (waitKey(0));
+		//imshow("main", m);
+		frame++;
+		cout << frame << endl;
+		imwrite(to_string(frame) + ".jpg", m);
+	}
 }
